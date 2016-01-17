@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -18,10 +13,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- *
- * @author Tobias Jacobsen
- */
 @Entity
 @Table(name = "student")
 @NamedQueries({
@@ -30,20 +21,29 @@ import javax.persistence.Table;
     @NamedQuery(name = "Student.findByFirstname", query = "SELECT s FROM Student s WHERE s.firstname = :firstname"),
     @NamedQuery(name = "Student.findByLastname", query = "SELECT s FROM Student s WHERE s.lastname = :lastname")})
 public class Student implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+
     @Column(name = "FIRSTNAME")
     private String firstname;
+
     @Column(name = "LASTNAME")
     private String lastname;
-    @OneToMany(mappedBy = "student")
+
+    @OneToMany(mappedBy = "studentId")
     private Collection<Studypoint> studypointCollection;
 
     public Student() {
+    }
+
+    public Student(String firstName, String lastName) {
+        this.firstname = firstName;
+        this.lastname = lastName;
     }
 
     public Student(Integer id) {
@@ -81,6 +81,11 @@ public class Student implements Serializable {
     public void setStudypointCollection(Collection<Studypoint> studypointCollection) {
         this.studypointCollection = studypointCollection;
     }
+    
+    public void addStudypoint(Studypoint p) {
+        p.setStudentId(this);
+        studypointCollection.add(p);
+    }
 
     @Override
     public int hashCode() {
@@ -104,7 +109,6 @@ public class Student implements Serializable {
 
     @Override
     public String toString() {
-        return "scripts.Student[ id=" + id + " ]";
+        return "control.Student[ id=" + id + " ]";
     }
-    
 }

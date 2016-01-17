@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -18,10 +13,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-/**
- *
- * @author Tobias Jacobsen
- */
 @Entity
 @Table(name = "studypoint")
 @NamedQueries({
@@ -31,23 +22,34 @@ import javax.persistence.Table;
     @NamedQuery(name = "Studypoint.findByMaxval", query = "SELECT s FROM Studypoint s WHERE s.maxval = :maxval"),
     @NamedQuery(name = "Studypoint.findByScore", query = "SELECT s FROM Studypoint s WHERE s.score = :score")})
 public class Studypoint implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+
     @Column(name = "DESCRIPTION")
     private String description;
+
     @Column(name = "MAXVAL")
     private Integer maxval;
+
     @Column(name = "SCORE")
     private Integer score;
+
     @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID")
     @ManyToOne
-    private Student student;
+    private Student studentId;
 
     public Studypoint() {
+    }
+
+    public Studypoint(String description, int maxval, int score) {
+        this.description = description;
+        this.maxval = maxval;
+        this.score = score;
     }
 
     public Studypoint(Integer id) {
@@ -86,12 +88,12 @@ public class Studypoint implements Serializable {
         this.score = score;
     }
 
-    public Student getStudent() {
-        return student;
+    public Student getStudentId() {
+        return studentId;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public void setStudentId(Student studentId) {
+        this.studentId = studentId;
     }
 
     @Override
@@ -116,7 +118,6 @@ public class Studypoint implements Serializable {
 
     @Override
     public String toString() {
-        return "scripts.Studypoint[ id=" + id + " ]";
+        return "control.Studypoint[ id=" + id + " ]";
     }
-    
 }
